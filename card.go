@@ -74,26 +74,30 @@ type CardList struct {
 // When creating a new card, the parameters are passed as a dictionary, but
 // on updates they are simply the parameter name.
 func (c *CardParams) AppendDetails(values *url.Values, creating bool) {
+	card := "card"
+
+	if len(c.Account) > 0 {
+		card = "external_account"
+	}
+
 	if creating {
-		if len(c.Token) > 0 && len(c.Account) > 0 {
-			values.Add("external_account", c.Token)
-		} else if len(c.Token) > 0 {
-			values.Add("card", c.Token)
+		if len(c.Token) > 0 {
+			values.Add(card, c.Token)
 		} else {
-			values.Add("card[object]", "card")
-			values.Add("card[number]", c.Number)
-			values.Add("card[exp_month]", c.Month)
-			values.Add("card[exp_year]", c.Year)
+			values.Add(fmt.Sprintf("%s[object]", card), "card")
+			values.Add(fmt.Sprintf("%s[number]", card), c.Number)
+			values.Add(fmt.Sprintf("%s[exp_month]", card), c.Month)
+			values.Add(fmt.Sprintf("%s[exp_year]", card), c.Year)
 
 			if len(c.CVC) > 0 {
-				values.Add("card[cvc]", c.CVC)
+				values.Add(fmt.Sprintf("%s[cvc]", card), c.CVC)
 			}
 		}
 	}
 
 	if len(c.Name) > 0 {
 		if creating {
-			values.Add("card[name]", c.Name)
+			values.Add(fmt.Sprintf("%s[name]", card), c.Name)
 		} else {
 			values.Add("name", c.Name)
 		}
@@ -101,7 +105,7 @@ func (c *CardParams) AppendDetails(values *url.Values, creating bool) {
 
 	if len(c.Address1) > 0 {
 		if creating {
-			values.Add("card[address_line1]", c.Address1)
+			values.Add(fmt.Sprintf("%s[address_line1]", card), c.Address1)
 		} else {
 			values.Add("address_line1", c.Address1)
 		}
@@ -109,7 +113,7 @@ func (c *CardParams) AppendDetails(values *url.Values, creating bool) {
 
 	if len(c.Address2) > 0 {
 		if creating {
-			values.Add("card[address_line2]", c.Address2)
+			values.Add(fmt.Sprintf("%s[address_line2]", card), c.Address2)
 		} else {
 			values.Add("address_line2", c.Address2)
 		}
@@ -117,7 +121,7 @@ func (c *CardParams) AppendDetails(values *url.Values, creating bool) {
 
 	if len(c.City) > 0 {
 		if creating {
-			values.Add("card[address_city]", c.City)
+			values.Add(fmt.Sprintf("%s[address_city]", card), c.City)
 		} else {
 			values.Add("address_city", c.City)
 		}
@@ -125,7 +129,7 @@ func (c *CardParams) AppendDetails(values *url.Values, creating bool) {
 
 	if len(c.State) > 0 {
 		if creating {
-			values.Add("card[address_state]", c.State)
+			values.Add(fmt.Sprintf("%s[address_state]", card), c.State)
 		} else {
 			values.Add("address_state", c.State)
 		}
@@ -133,7 +137,7 @@ func (c *CardParams) AppendDetails(values *url.Values, creating bool) {
 
 	if len(c.Zip) > 0 {
 		if creating {
-			values.Add("card[address_zip]", c.Zip)
+			values.Add(fmt.Sprintf("%s[address_zip]", card), c.Zip)
 		} else {
 			values.Add("address_zip", c.Zip)
 		}
@@ -141,7 +145,7 @@ func (c *CardParams) AppendDetails(values *url.Values, creating bool) {
 
 	if len(c.Country) > 0 {
 		if creating {
-			values.Add("card[address_country]", c.Country)
+			values.Add(fmt.Sprintf("%s[address_country]", card), c.Country)
 		} else {
 			values.Add("address_country", c.Country)
 		}
